@@ -423,7 +423,7 @@ const App: React.FC = () => {
            </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto bg-gray-50/50 relative">
+        <div className="flex-1 overflow-y-auto bg-gray-50/50 relative pb-16 md:pb-0">
            {activeTab === 'dashboard' && (
              <Dashboard 
                 cases={dengueCases} 
@@ -481,23 +481,23 @@ const App: React.FC = () => {
            )}
         </div>
 
-        {/* Mobile Bottom Navigation */}
-        <div className="md:hidden h-14 bg-white border-t border-gray-200 flex items-center justify-around px-2 shrink-0 z-20 safe-area-pb">
-           <button onClick={() => setActiveTab('dashboard')} className={`flex flex-col items-center gap-0.5 p-2 min-w-[60px] ${activeTab === 'dashboard' ? 'text-primary-700' : 'text-gray-400'}`}>
+        {/* Fixed Mobile Bottom Navigation */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 h-14 bg-white border-t border-gray-200 flex items-center justify-around px-2 z-50 safe-area-pb shadow-[0_-1px_10px_rgba(0,0,0,0.05)]">
+           <button onClick={() => setActiveTab('dashboard')} className={`flex flex-col items-center gap-0.5 p-2 min-w-[60px] active:scale-95 transition-transform ${activeTab === 'dashboard' ? 'text-primary-700' : 'text-gray-400'}`}>
               <LayoutDashboard size={20} strokeWidth={activeTab === 'dashboard' ? 2.5 : 2} />
-              <span className="text-[9px] font-medium">Dash</span>
+              <span className="text-[9px] font-bold uppercase tracking-tighter">Dash</span>
            </button>
-           <button onClick={() => setActiveTab('cases')} className={`flex flex-col items-center gap-0.5 p-2 min-w-[60px] ${activeTab === 'cases' ? 'text-primary-700' : 'text-gray-400'}`}>
+           <button onClick={() => setActiveTab('cases')} className={`flex flex-col items-center gap-0.5 p-2 min-w-[60px] active:scale-95 transition-transform ${activeTab === 'cases' ? 'text-primary-700' : 'text-gray-400'}`}>
               <ClipboardList size={20} strokeWidth={activeTab === 'cases' ? 2.5 : 2} />
-              <span className="text-[9px] font-medium">Cases</span>
+              <span className="text-[9px] font-bold uppercase tracking-tighter">Cases</span>
            </button>
-           <button onClick={() => setActiveTab('directory')} className={`flex flex-col items-center gap-0.5 p-2 min-w-[60px] ${activeTab === 'directory' ? 'text-primary-700' : 'text-gray-400'}`}>
+           <button onClick={() => setActiveTab('directory')} className={`flex flex-col items-center gap-0.5 p-2 min-w-[60px] active:scale-95 transition-transform ${activeTab === 'directory' ? 'text-primary-700' : 'text-gray-400'}`}>
               <Users size={20} strokeWidth={activeTab === 'directory' ? 2.5 : 2} />
-              <span className="text-[9px] font-medium">Staff</span>
+              <span className="text-[9px] font-bold uppercase tracking-tighter">Staff</span>
            </button>
-           <button onClick={() => setActiveTab('settings')} className={`flex flex-col items-center gap-0.5 p-2 min-w-[60px] ${activeTab === 'settings' ? 'text-primary-700' : 'text-gray-400'}`}>
+           <button onClick={() => setActiveTab('settings')} className={`flex flex-col items-center gap-0.5 p-2 min-w-[60px] active:scale-95 transition-transform ${activeTab === 'settings' ? 'text-primary-700' : 'text-gray-400'}`}>
               <Settings size={20} strokeWidth={activeTab === 'settings' ? 2.5 : 2} />
-              <span className="text-[9px] font-medium">Settings</span>
+              <span className="text-[9px] font-bold uppercase tracking-tighter">Tools</span>
            </button>
         </div>
       </main>
