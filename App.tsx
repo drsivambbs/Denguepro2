@@ -310,60 +310,6 @@ const App: React.FC = () => {
     setIsAddCaseOpen(false);
   };
 
-  const handleDownloadTemplate = () => {
-    const CSV_HEADERS = ['Patient Name', 'Age', 'Gender', 'Address', 'Location', 'Status', 'Contact Number', 'Diagnosis Date (YYYY-MM-DD)'];
-    const sampleRow = ['John Doe', '30', 'Male', '123 Main St', 'Central District', 'Suspected', '+15550001234', '2023-10-01'];
-    const csvContent = [CSV_HEADERS.join(','), sampleRow.join(',')].join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    if (link.download !== undefined) {
-        const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', 'dengue_cases_template.csv');
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-  };
-
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        const text = e.target?.result as string;
-        if (!text) return;
-        try {
-            const lines = text.split('\n').map(line => line.trim()).filter(line => line);
-            if (lines.length < 1) return;
-            const dataRows = lines.slice(1);
-            const newCases: DengueCase[] = dataRows.map((row): DengueCase | null => {
-                const cols = row.split(',').map(c => c.trim());
-                if (cols.length < 5) return null;
-                const status = ['Suspected', 'Confirmed', 'Recovered', 'Critical'].includes(cols[5]) 
-                    ? cols[5] as CaseStatus : 'Suspected';
-                return {
-                    id: crypto.randomUUID(),
-                    patientName: cols[0] || 'Unknown',
-                    age: parseInt(cols[1]) || 0,
-                    gender: (cols[2] === 'Male' || cols[2] === 'Female') ? cols[2] : 'Other',
-                    address: cols[3] || '',
-                    location: cols[4] || '',
-                    status: status,
-                    contactNumber: cols[6] || '',
-                    diagnosisDate: cols[7] ? new Date(cols[7]).getTime() : Date.now(),
-                    followUpStatus: 'Pending',
-                    history: []
-                };
-            }).filter((c): c is DengueCase => c !== null);
-            if (newCases.length > 0) setDengueCases(prev => [...prev, ...newCases]);
-        } catch (error) { console.error('Error parsing CSV', error); }
-        if (fileInputRef.current) fileInputRef.current.value = '';
-    };
-    reader.readAsText(file);
-  };
-
   const filteredUsers = users.filter(user => {
     const query = searchQuery.toLowerCase();
     const matchesSearch = user.name.toLowerCase().includes(query) || user.role.toLowerCase().includes(query) || user.locationName.toLowerCase().includes(query);
@@ -395,7 +341,7 @@ const App: React.FC = () => {
   if (!currentUser) return <LoginForm onLogin={handleLogin} />;
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-gray-50 text-gray-900 font-sans">
+    <div className="flex h-[100dvh] w-screen overflow-hidden bg-gray-50 text-gray-900 font-sans">
       
       {/* Desktop Sidebar */}
       <aside className="hidden md:flex w-60 flex-col bg-primary-900 text-white shrink-0 shadow-xl z-20">
@@ -450,7 +396,7 @@ const App: React.FC = () => {
         </div>
       </aside>
 
-      <main className="flex-1 flex flex-col relative min-w-0">
+      <main className="flex-1 flex flex-col relative min-w-0 h-full">
         <header className="md:hidden h-12 bg-primary-900 text-white flex items-center justify-between px-3 shrink-0 shadow-md z-20">
            <div className="flex items-center gap-2">
              <Activity size={18} />
